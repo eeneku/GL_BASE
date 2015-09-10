@@ -77,11 +77,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\app.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\shader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\fragment.shader" />
     <None Include="res\shaders\vertex.shader" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="inc\app.h" />
+    <ClInclude Include="inc\shader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
