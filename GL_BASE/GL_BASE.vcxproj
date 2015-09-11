@@ -78,8 +78,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\app.cpp" />
+    <ClCompile Include="src\lodepng.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\shader.cpp" />
+    <ClCompile Include="src\texture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\fragment.shader" />
@@ -87,7 +89,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="inc\app.h" />
+    <ClInclude Include="inc\lodepng.h" />
     <ClInclude Include="inc\shader.h" />
+    <ClInclude Include="inc\texture.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

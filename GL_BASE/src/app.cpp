@@ -5,13 +5,15 @@
 App::App() : window(nullptr), shader(nullptr)
 {
 	GLfloat vertices[] = {
-		0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f,
-		-0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f,
-		0.0f, 0.5f, 0.0f, 0.0f, 0.0f, 1.0f
+		0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f,
+		0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f,
+		-0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+		-0.5f, 0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f
 	};
 
 	GLuint indices[] = {
 		0, 1, 2,
+		0, 2, 3
 	};
 
 	glfwInit();
@@ -38,6 +40,8 @@ App::App() : window(nullptr), shader(nullptr)
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 	shader = new Shader("res/shaders/vertex.shader", "res/shaders/fragment.shader");
+	texture1 = new Texture(GL_TEXTURE_2D, "res/textures/wall.png");
+	texture2 = new Texture(GL_TEXTURE_2D, "res/textures/awesomeface.png");
 
 	glfwSetKeyCallback(window, keyCallback);
 
@@ -53,12 +57,14 @@ App::App() : window(nullptr), shader(nullptr)
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)0);
 	glEnableVertexAttribArray(0);
 
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
-
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(1);
+
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
+	glEnableVertexAttribArray(2);
 
 	glBindVertexArray(0);
 }
@@ -76,24 +82,31 @@ void App::run()
 	{
 		glfwPollEvents();
 
-		glClear(GL_COLOR_BUFFER_BIT);
-
-		shader->use();
-
-		glBindVertexArray(VAO);
-
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-
-		glBindVertexArray(0);
-		glUseProgram(0);
-
-		glfwSwapBuffers(window);
+		render();
 	}
 }
 
 void App::render()
 {
+	glClear(GL_COLOR_BUFFER_BIT);
 
+	shader->bind();
+
+	texture1->bind(GL_TEXTURE0);
+	glUniform1i(glGetUniformLocation(shader->getProgram(), "texture1"), 0);
+
+	texture2->bind(GL_TEXTURE1);
+	glUniform1i(glGetUniformLocation(shader->getProgram(), "texture2"), 1);
+
+	glBindVertexArray(VAO);
+
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+	glBindVertexArray(0);
+
+	shader->unbind();
+
+	glfwSwapBuffers(window);
 }
 
 void App::keyCallback(GLFWwindow* window, int key, int scancode, int action, int mode)

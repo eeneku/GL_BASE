@@ -5,6 +5,7 @@
 #include <GLFW\glfw3.h>
 
 #include "shader.h"
+#include "texture.h"
 
 class App
 {
@@ -23,6 +24,8 @@ private:
 	GLuint VAO;
 	GLuint programID;
 	Shader* shader;
+	Texture* texture1;
+	Texture* texture2;
 };
 
 #endif

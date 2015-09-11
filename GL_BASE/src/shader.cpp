@@ -92,7 +92,12 @@ Shader::~Shader()
 	glDeleteProgram(program);
 }
 
-void Shader::use()
+void Shader::bind()
 {
 	glUseProgram(program);
+}
+
+void Shader::unbind()
+{
+	glUseProgram(0);
 }

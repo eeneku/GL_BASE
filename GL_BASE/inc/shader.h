@@ -9,8 +9,9 @@ public:
 	Shader(const GLchar* vertexPath, const GLchar* fragmentPath);
 	~Shader();
 
-	void use();
-	GLuint getProgramID() { return program; }
+	void bind();
+	void unbind();
+	GLuint getProgram() { return program; }
 private:
 	GLuint program;
 };
