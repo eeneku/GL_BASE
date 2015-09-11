@@ -1,6 +1,8 @@
 #include "app.h"
 
 #include <cassert>
+#include <glm\gtc\matrix_transform.hpp>
+#include <glm\gtc\type_ptr.hpp>
 
 App::App() : window(nullptr), shader(nullptr)
 {
@@ -67,6 +69,8 @@ App::App() : window(nullptr), shader(nullptr)
 	glEnableVertexAttribArray(2);
 
 	glBindVertexArray(0);
+
+
 }
 
 App::~App()
@@ -90,13 +94,26 @@ void App::render()
 {
 	glClear(GL_COLOR_BUFFER_BIT);
 
+	GLfloat timeValue = glfwGetTime();
+
 	shader->bind();
+
+	glm::mat4 MVP;
+	MVP = glm::rotate(MVP, glm::radians(timeValue * 50.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+	MVP = glm::scale(MVP, glm::vec3(0.4f, 0.4f, 1.0f));
+	MVP = glm::translate(MVP, glm::vec3(0.75f, -0.75f, 0.0f));
+	MVP = glm::rotate(MVP, glm::radians(timeValue * 100.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+	
 
 	texture1->bind(GL_TEXTURE0);
 	glUniform1i(glGetUniformLocation(shader->getProgram(), "texture1"), 0);
 
 	texture2->bind(GL_TEXTURE1);
 	glUniform1i(glGetUniformLocation(shader->getProgram(), "texture2"), 1);
+
+	glUniformMatrix4fv(glGetUniformLocation(shader->getProgram(), "MVP"), 1, GL_FALSE, glm::value_ptr(MVP));
+
+	glUniform3f(glGetUniformLocation(shader->getProgram(), "yoloColor"), (sin(timeValue) / 2) + 0.3f, (-sin(timeValue) / 2) + 0.2f, (sin(timeValue) / 2) + 0.9f);
 
 	glBindVertexArray(VAO);
 

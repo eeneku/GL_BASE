@@ -1,8 +1,9 @@
 #ifndef APP_H
 #define APP_H
 
-#include <GL/glew.h>
+#include <GL\glew.h>
 #include <GLFW\glfw3.h>
+#include <glm\glm.hpp>
 
 #include "shader.h"
 #include "texture.h"
