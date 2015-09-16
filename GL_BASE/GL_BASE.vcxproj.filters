@@ -30,12 +30,21 @@
     <ClCompile Include="src\lodepng.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\mesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\vertex.shader">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="res\shaders\fragment.shader">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\meshes\cube.mesh">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
@@ -50,6 +59,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="inc\lodepng.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\mesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
