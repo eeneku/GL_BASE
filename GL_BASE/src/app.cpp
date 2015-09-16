@@ -140,6 +140,14 @@ void App::checkMovement()
 		camera.setPosition(camera.getPosition() - camera.getRight() * speed);
 	if (keys[GLFW_KEY_D])
 		camera.setPosition(camera.getPosition() + camera.getRight() * speed);
+	if (keys[GLFW_KEY_Q])
+		camera.setYawPitch(-0.5f, 0.0f);
+	if (keys[GLFW_KEY_E])
+		camera.setYawPitch(0.5f, 0.0f);
+	if (keys[GLFW_KEY_Z])
+		camera.setYawPitch(0.0f, +0.5f);
+	if (keys[GLFW_KEY_X])
+		camera.setYawPitch(0.0f, -0.5f);
 }
 
 void App::keyCallback(GLFWwindow* window, int key, int scancode, int action, int mode)

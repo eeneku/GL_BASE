@@ -11,6 +11,7 @@ public:
 	~Camera();
 
 	void setPosition(glm::vec3 v) { position = v; calculateVectors(); }
+	void setYawPitch(GLfloat y, GLfloat p);
 
 	const glm::vec3& getPosition() const { return position; }
 	const glm::vec3& getFront() const { return front; }

@@ -23,3 +23,16 @@ void Camera::calculateVectors()
 
 	view = glm::lookAt(position, position + front, up);
 }
+
+void Camera::setYawPitch(GLfloat y, GLfloat p)
+{
+	pitch += p; 
+	if (pitch > 89.0f) 
+		pitch = 89.0f; 
+	if (pitch < -89.0f) 
+		pitch = -89.0f; 
+
+	yaw += y; 
+	
+	calculateVectors();
+}
