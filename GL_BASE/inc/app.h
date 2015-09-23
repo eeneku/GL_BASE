@@ -9,6 +9,7 @@
 #include "shader.h"
 #include "texture.h"
 #include "camera.h"
+#include "sprite.h"
 
 static bool keys[1024];
 
