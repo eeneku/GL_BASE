@@ -33,10 +33,11 @@ private:
 	GLuint programID;
 	Shader* shader;
 	Texture* texture;
-	Mesh* mesh;
+	Texture* texture2;
 	Camera camera;
+	Sprite* sprite;
+	Sprite* sprite2;
 
-	glm::mat4 model;
 	glm::mat4 projection;
 };
 

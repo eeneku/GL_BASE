@@ -32,43 +32,27 @@ App::App() : window(nullptr), shader(nullptr), camera(glm::vec3(0.0f, 0.0f, 3.0f
 
 	glEnable(GL_DEPTH_TEST);
 
-	shader = new Shader("res/shaders/vertex.shader", "res/shaders/fragment.shader");
-	texture = new Texture(GL_TEXTURE_2D, "res/textures/cube.png");
+	glGenVertexArrays(1, &VAO);
+	glBindVertexArray(VAO);
 
-	mesh = new Mesh("res/meshes/cube.mesh");
+	shader = new Shader("res/shaders/vertex.shader", "res/shaders/fragment.shader");
+	texture = new Texture(GL_TEXTURE_2D, "res/textures/penguins.png");
+	texture2 = new Texture(GL_TEXTURE_2D, "res/textures/wall.png");
+	sprite = new Sprite(glm::vec3(0.0f, 0.0f, 0.0f), texture, shader);
+	sprite2 = new Sprite(glm::vec3(250.0f, 250.0f, 1.0f), texture2, shader);
 
 	glfwSetKeyCallback(window, keyCallback);
 
-	glGenVertexArrays(1, &VAO);
-	glGenBuffers(1, &VBO);
-	glGenBuffers(1, &IBO);
-
-	glBindVertexArray(VAO);
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * mesh->getIndices().size(), mesh->getIndices().data(), GL_STATIC_DRAW);
-
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(Mesh::Vertex) * mesh->getVertices().size(), mesh->getVertices().data(), GL_STATIC_DRAW);
-
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Mesh::Vertex), (GLvoid*)(offsetof(Mesh::Vertex, position)));
-	glEnableVertexAttribArray(0);
-
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Mesh::Vertex), (GLvoid*)(offsetof(Mesh::Vertex, uv)));
-	glEnableVertexAttribArray(1);
-
-	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Mesh::Vertex), (GLvoid*)(offsetof(Mesh::Vertex, normal)));
-	glEnableVertexAttribArray(2);
-
-	glBindVertexArray(0);
-
-	model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-	projection = glm::perspective(45.0f, 800.0f / 600.0f, 0.1f, 100.0f);
+	projection = glm::ortho(0.0f, 800.0f, 600.0f, 0.0f, 0.0f, 100.0f);
 }
 
 App::~App()
 {
+	glBindVertexArray(0);
+
 	delete shader;
+	delete texture;
+	delete sprite;
 
 	glfwTerminate();
 }
@@ -87,41 +71,10 @@ void App::render()
 {
 	checkMovement();
 
-	glm::vec3 cubePositions[] = {
-		glm::vec3(0.0f, 0.0f, 0.0f),
-		glm::vec3(4.0f, 10.0f, -30.0f),
-		glm::vec3(-3.0f, -4.4f, -5.0f),
-		glm::vec3(-7.6f, -4.0f, -24.6f),
-		glm::vec3(4.8f, -0.8f, -7.0f),
-		glm::vec3(-3.4f, 6.0f, -15.0f),
-		glm::vec3(2.6f, -4.0f, -5.0f),
-		glm::vec3(3.0f, 4.0f, -5.0f),
-		glm::vec3(3.0f, 0.4f, -3.0f),
-		glm::vec3(-2.6f, 2.0f, -3.0f)
-	};
-
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	shader->bind();
-
-	texture->bind(GL_TEXTURE0);
-	glUniform1i(glGetUniformLocation(shader->getProgram(), "texture"), 0);
-
-	glBindVertexArray(VAO);
-
-	for (size_t i = 0; i < 10; i++)
-	{
-		glm::mat4 model2;
-		model2 = glm::translate(model2, cubePositions[i]);
-		GLfloat angle = 20.0f * i;
-		model2 = glm::rotate(model2, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
-		glUniformMatrix4fv(glGetUniformLocation(shader->getProgram(), "MVP"), 1, GL_FALSE, glm::value_ptr(projection * camera.getView() * model2));
-		glDrawElements(GL_TRIANGLES, mesh->getIndices().size(), GL_UNSIGNED_INT, nullptr);
-	}
-
-	glBindVertexArray(0);
-
-	shader->unbind();
+	sprite->render(camera.getView(), projection);
+	sprite2->render(camera.getView(), projection);
 
 	glfwSwapBuffers(window);
 }

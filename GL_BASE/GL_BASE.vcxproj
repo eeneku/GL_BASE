@@ -100,6 +100,11 @@
     <ClInclude Include="inc\sprite.h" />
     <ClInclude Include="inc\texture.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\textures\awesomeface.png" />
+    <Image Include="res\textures\cube.png" />
+    <Image Include="res\textures\wall.png" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

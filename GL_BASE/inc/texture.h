@@ -11,8 +11,11 @@ public:
 	~Texture();
 
 	void bind(GLenum to);
+	void unbind();
 
 	GLuint getId() { return texture; }
+	GLuint getWidth() { return width; }
+	GLuint getHeight() { return height; }
 private:
 	GLuint texture;
 	GLuint width;
