@@ -28,7 +28,7 @@ Sprite::Sprite(glm::vec3 position, Texture* texture, Shader* shader) : position(
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_DYNAMIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
 
 	uniformMVP = glGetUniformLocation(shader->getProgram(), "MVP");
@@ -68,9 +68,9 @@ void Sprite::render(const glm::mat4& view, const glm::mat4& projection)
 
 	shader->unbind();
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
