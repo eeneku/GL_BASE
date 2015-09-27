@@ -73,8 +73,7 @@ void App::render()
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	sprite->render(camera.getView(), projection);
-	sprite2->render(camera.getView(), projection);
+	renderTexture(texture2, 100.0f, 100.0f);
 
 	glfwSwapBuffers(window);
 }
@@ -108,4 +107,64 @@ void App::keyCallback(GLFWwindow* window, int key, int scancode, int action, int
 
 	if (action == GLFW_PRESS) keys[key] = true;
 	else if (action == GLFW_RELEASE) keys[key] = false;
+}
+
+void App::renderTexture(Texture* texture, GLfloat x, GLfloat y)
+{
+	GLfloat width = (GLfloat)texture->getWidth();
+	GLfloat height = (GLfloat)texture->getHeight();
+	GLuint IBO, VBO, uniformMVP, uniformTexture;
+
+	glm::mat4 model(1.0f);
+
+	GLfloat vertices[] = {
+		0.0f, height, 0.0f, 0.0f, 1.0f,
+		width, height, 0.0f, 1.0f, 1.0f,
+		width, 0.0f, 0.0f, 1.0f, 0.0f,
+		0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+	};
+
+	GLuint indices[] = {
+		0, 1, 2, 0, 2, 3
+	};
+
+	glGenBuffers(1, &VBO);
+	glGenBuffers(1, &IBO);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
+
+	uniformMVP = glGetUniformLocation(shader->getProgram(), "MVP");
+	uniformTexture = glGetUniformLocation(shader->getProgram(), "texture");
+
+	model = glm::translate(model, glm::vec3(x, y, 0.0f));
+
+	shader->bind();
+
+	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(1);
+
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)0);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+
+	glUniform1i(uniformTexture, 0);
+	glUniformMatrix4fv(uniformMVP, 1, GL_FALSE, glm::value_ptr(projection * camera.getView() * model));
+
+	texture->bind(GL_TEXTURE0);
+
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+
+	shader->unbind();
+
+	glDisableVertexAttribArray(0);
+	glDisableVertexAttribArray(1);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	glDeleteBuffers(1, &VBO);
+	glDeleteBuffers(1, &IBO);
 }

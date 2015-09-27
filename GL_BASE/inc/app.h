@@ -25,6 +25,7 @@ private:
 
 	void render();
 	void checkMovement();
+	void renderTexture(Texture* texture, GLfloat x, GLfloat y);
 
 	GLFWwindow* window;
 	GLuint VBO;
