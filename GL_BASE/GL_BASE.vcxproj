@@ -94,6 +94,7 @@
     <ClInclude Include="inc\app.h" />
     <ClInclude Include="inc\batch.h" />
     <ClInclude Include="inc\camera.h" />
+    <ClInclude Include="inc\color.h" />
     <ClInclude Include="inc\lodepng.h" />
     <ClInclude Include="inc\mesh.h" />
     <ClInclude Include="inc\shader.h" />

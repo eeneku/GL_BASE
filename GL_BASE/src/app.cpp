@@ -3,6 +3,7 @@
 #include <cassert>
 #include <glm\gtc\matrix_transform.hpp>
 #include <glm\gtc\type_ptr.hpp>
+#include "color.h"
 
 App::App() : window(nullptr), shader(nullptr), camera(glm::vec3(0.0f, 0.0f, 3.0f))
 {
@@ -80,11 +81,15 @@ void App::render()
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	batch->drawRectangle(glm::vec3(10.0f, 10.0f, 1.0f), glm::vec2(100.0f, 100.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
+	batch->drawQuad(0.0f, 0.0f, 100.0f, 20.0f, clrBlack);
 
-	batch->drawRectangle(glm::vec3(100.0f, 100.0f, 1.0f), glm::vec2(250.0f, 75.0f), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
+	batch->drawQuad(250.0f, 200.0f, 50.0f, 50.0f, clrBlue);
 
-	//renderTexture(texture2, 100.0f, 100.0f);
+	batch->drawTriangle(10.0f, 10.0f, 20.0f, 20.0f, 0.0f, 30.0f, clrGreen, 10.0f);
+
+	batch->drawTriangle(700.0f, 200.0f, 650.0f, 175.0f, 600.0f, 250.0f, clrWhite, 10.0f);
+
+	batch->drawQuad(500.0f, 200.0f, 100.0f, 350.0f, clrRed);
 
 	batch->end();
 

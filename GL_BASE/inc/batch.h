@@ -5,6 +5,7 @@
 #include <vector>
 
 class Shader;
+struct Color;
 
 struct Vertex
 {
@@ -25,7 +26,8 @@ public:
 	void begin();
 	void end();
 	void draw(const std::vector<Vertex>* vertices, const std::vector<GLuint>* indices = nullptr);
-	void drawRectangle(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color);
+	void drawQuad(GLfloat x, GLfloat y, GLfloat width, GLfloat height, const Color& color, GLfloat depth = 0);
+	void drawTriangle(GLfloat x1, GLfloat y1, GLfloat x2, GLfloat y2, GLfloat x3, GLfloat y3, const Color& color, GLfloat depth = 0);
 	void flush();
 private:
 	std::vector<Vertex> vertices;
@@ -41,6 +43,9 @@ private:
 	glm::mat4 projection;
 
 	bool hasBegun;
+	bool currentIndexed;
+
+	bool currentlyIndexing;
 
 	Shader* shader;
 };
