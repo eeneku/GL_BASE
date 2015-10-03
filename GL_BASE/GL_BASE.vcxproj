@@ -74,6 +74,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\app.cpp" />
+    <ClCompile Include="src\batch.cpp" />
     <ClCompile Include="src\camera.cpp" />
     <ClCompile Include="src\lodepng.cpp" />
     <ClCompile Include="src\main.cpp" />
@@ -85,10 +86,13 @@
   <ItemGroup>
     <None Include="res\meshes\cube.mesh" />
     <None Include="res\shaders\fragment.shader" />
+    <None Include="res\shaders\primitive.fragment.shader" />
+    <None Include="res\shaders\primitive.vertex.shader" />
     <None Include="res\shaders\vertex.shader" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="inc\app.h" />
+    <ClInclude Include="inc\batch.h" />
     <ClInclude Include="inc\camera.h" />
     <ClInclude Include="inc\lodepng.h" />
     <ClInclude Include="inc\mesh.h" />

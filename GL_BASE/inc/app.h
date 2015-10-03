@@ -10,6 +10,7 @@
 #include "texture.h"
 #include "camera.h"
 #include "sprite.h"
+#include "batch.h"
 
 static bool keys[1024];
 
@@ -33,11 +34,13 @@ private:
 	GLuint VAO;
 	GLuint programID;
 	Shader* shader;
+	Shader* primitiveShader;
 	Texture* texture;
 	Texture* texture2;
 	Camera camera;
 	Sprite* sprite;
 	Sprite* sprite2;
+	Batch* batch;
 
 	glm::mat4 projection;
 };

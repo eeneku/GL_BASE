@@ -14,7 +14,7 @@ App::App() : window(nullptr), shader(nullptr), camera(glm::vec3(0.0f, 0.0f, 3.0f
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
-	window = glfwCreateWindow(800, 600, "GL BASE", nullptr, nullptr);
+	window = glfwCreateWindow(1280, 720, "GL BASE", nullptr, nullptr);
 
 	assert(window != nullptr);
 
@@ -24,7 +24,7 @@ App::App() : window(nullptr), shader(nullptr), camera(glm::vec3(0.0f, 0.0f, 3.0f
 
 	assert(glewInit() == GLEW_OK);
 
-	glViewport(0, 0, 800, 600);
+	glViewport(0, 0, 1280, 720);
 
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 
@@ -36,14 +36,16 @@ App::App() : window(nullptr), shader(nullptr), camera(glm::vec3(0.0f, 0.0f, 3.0f
 	glBindVertexArray(VAO);
 
 	shader = new Shader("res/shaders/vertex.shader", "res/shaders/fragment.shader");
+	primitiveShader = new Shader("res/shaders/primitive.vertex.shader", "res/shaders/primitive.fragment.shader");
 	texture = new Texture(GL_TEXTURE_2D, "res/textures/penguins.png");
 	texture2 = new Texture(GL_TEXTURE_2D, "res/textures/wall.png");
 	sprite = new Sprite(glm::vec3(0.0f, 0.0f, 0.0f), texture, shader);
 	sprite2 = new Sprite(glm::vec3(250.0f, 250.0f, 1.0f), texture2, shader);
+	batch = new Batch(primitiveShader, 2048);
 
 	glfwSetKeyCallback(window, keyCallback);
 
-	projection = glm::ortho(0.0f, 800.0f, 600.0f, 0.0f, 0.0f, 100.0f);
+	projection = glm::ortho(0.0f, 1280.0f, 720.0f, 0.0f, 0.0f, 100.0f);
 }
 
 App::~App()
@@ -51,8 +53,11 @@ App::~App()
 	glBindVertexArray(0);
 
 	delete shader;
+	delete primitiveShader;
 	delete texture;
+	delete texture2;
 	delete sprite;
+	delete sprite2;
 
 	glfwTerminate();
 }
@@ -63,17 +68,25 @@ void App::run()
 	{
 		glfwPollEvents();
 
+		checkMovement();
+
 		render();
 	}
 }
 
 void App::render()
 {
-	checkMovement();
+	batch->begin();
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	renderTexture(texture2, 100.0f, 100.0f);
+	batch->drawRectangle(glm::vec3(10.0f, 10.0f, 1.0f), glm::vec2(100.0f, 100.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
+
+	batch->drawRectangle(glm::vec3(100.0f, 100.0f, 1.0f), glm::vec2(250.0f, 75.0f), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
+
+	//renderTexture(texture2, 100.0f, 100.0f);
+
+	batch->end();
 
 	glfwSwapBuffers(window);
 }
